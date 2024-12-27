@@ -1,6 +1,7 @@
 {
     "name": "yllumi/ci4-pages",
     "description": "Page based router for CodeIgniter 4",
+    "version": "0.1.1",
     "type": "library",
     "require": {
         "codeigniter4/framework": "^4.5",
