@@ -1,0 +1,104 @@
+{extends '../layouts/basic.html'}
+
+{block content}
+
+<div class="container mt-5" style="font-size: 16px;">
+  <h2>Edit Profil</h2>
+  {flashdata('message')|noescape}
+</div>
+
+{form_open('user/edit_profile_action')|noescape}
+<div class="page-section mb-5">
+  <div class="container">
+    
+    <div class="page-separator">
+      <div class="page-separator__text">Account</div>
+    </div>
+
+    <div class="col-md-7 p-0">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" value="{$result['username']}" placeholder="Your username ...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="text" id="email" name="email" class="form-control" value="{$result['email']}" placeholder="Your username ..." disabled="">
+      </div>
+    </div>
+    
+    <div class="page-separator mt-5">
+      <div class="page-separator__text">Basic Information</div>
+    </div>
+
+    <div class="col-md-7 p-0">
+
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" id="name" name="name" class="form-control" value="{$result['name']}" placeholder="Your name ...">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Your photo</label>
+        <div class="media align-items-center">
+          <!-- <a href="#" class="media-left me-16pt">
+            <img src="{$result['avatar']}" alt="people" width="56" class="rounded-circle" />
+          </a> -->
+          <div class="media-body">
+            <div class="custom-file">
+              <input type="text" id="profile_picture" name="profile_picture" class="form-control">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <label class="form-label">About you</label>
+        <textarea rows="3" id="short_description" name="short_description" class="form-control" placeholder="About you ...">{$result['short_description']}</textarea>
+      </div>
+    
+    </div>
+    
+    <div class="page-separator mt-5">
+      <div class="page-separator__text">Detail Profil</div>
+    </div>
+    
+    <div class="col-md-7 p-0">
+      {foreach $profile_entry['fields'] as $profile}
+        {if !($profile['admin_only'] ?? '')}
+          <div class="form-group">
+            <label class="form-label">{$profile['label']}</label>
+            {if $profile['description'] ?? ''}
+              <p class="mb-1">{$profile['description']}</p>
+            {/if}
+            {generate_input($profile, $result[$profile['field']])|noescape}
+          </div>
+        {/if}
+      {/foreach}
+    </div>
+
+    <div class="page-separator mt-5">
+      <div class="page-separator__text">Ganti Kata Sandi</div>
+    </div>
+
+    <div class="col-md-7 p-0">
+
+      <div class="form-group">
+        <label class="form-label">Kata Sandi</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Kata sandi baru">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Konfirmasi Kata Sandi</label>
+        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Ketik lagi kata sandi baru">
+      </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-4 btn-save">Save changes</button>
+  
+  </div>
+</div>
+{form_close()|noescape}
+
+{/block}

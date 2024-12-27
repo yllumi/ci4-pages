@@ -1,0 +1,19 @@
+name: Search
+icon: search
+description: Module Search Component
+author: Aldiansyah
+show_admin_menu: false
+menu_position: null
+parent_menu: null
+custom_url: null
+setting:
+  datatype:
+    field: datatype
+    label: Data Type
+    form: textarea
+    fullwidth: true
+    mode: yaml
+    default: |
+      post: Artikel
+      video: Video
+      product: Produk

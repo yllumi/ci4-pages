@@ -1,0 +1,29 @@
+name: Puller
+icon: git
+description: Git puller branch
+author: Toni Haryanto
+show_admin_menu: false
+menu_position: null
+parent_menu: null
+custom_menu: null
+setting:
+  enable:
+    field: enable
+    label: Enable Git Puller
+    form: switch
+    default: 0
+    options:
+      0: On
+      1: Off
+    dev_purpose: true
+  repos:
+    field: repos
+    label: Repository to Pull
+    desc: in format <code>projectname /path/to/project/folder branch</code>
+    form: textarea
+    dev_purpose: true
+  secret_key:
+    field: secret_key
+    label: Github Webhook Secret Key
+    form: text
+    dev_purpose: true

@@ -1,0 +1,11 @@
+name: Porter
+icon: archive
+description: Customizable import/export data so you don't have to write the code each time you need to import or export data 
+author: Toni Haryanto
+custom_url: null
+show_admin_menu: false
+menu_position: null
+parent_menu: "90:Configurations:cog"
+custom_menu: null
+privileges:
+  - read

@@ -1,0 +1,122 @@
+name: Users
+icon: users
+description: User management
+author: Ahmad Oriza (MeinCMS Team)
+author_url: null
+db_version: 0
+custom_url: null
+show_admin_menu: true
+menu_position: 14
+sub_menu:
+  10:
+    submodule: user
+    url: admin/user
+    icon: user
+    caption: Users
+    menu_permission: show
+  20:
+    submodule: user_role
+    url: admin/user/role
+    icon: users
+    caption: Roles
+    menu_permission: show_role
+setting: 
+  confirmation_type:
+    field: confirmation_type
+    label: Account Activation Method
+    desc: How new user activate account
+    form: dropdown
+    default: otp
+    options:
+      link: Link to Email
+      otp: OTP
+    dev_purpose: true
+  otp_mode:
+    field: otp_mode
+    label: OTP Mode
+    desc: IF activation using OTP, which mode is used?<br> Require Notifier module activated
+    form: dropdown
+    default: email
+    options:
+      email: Send to Email
+      ZenzivaWA: Send using Zenziva WhatsApp
+      WASender: Send using WASender
+      Woowa: Send using Woowa
+    dev_purpose: true
+  allow_login_before_activation:
+    field: allow_login_before_activation
+    label: Allow Login Before Activation
+    desc: |
+      Allow user to open dashboard directly after register and activate account later. <br>
+      If Yes, activation method will force to use Link to Email 
+    default: 0
+    form: switch
+    options:
+      0: No
+      1: Yes
+    dev_purpose: true
+  include_phone_on_register:
+    field: include_phone_on_register
+    label: Include Phone on Register form? 
+    desc: This will force to Yes if using activation method by OTP to WhatsApp or SMS
+    default: no
+    form: switch
+    options:
+      0: No
+      1: Yes
+    dev_purpose: true
+  use_single_login:
+    field: use_single_login
+    label: Use Single Login
+    desc: Allow user to login only in one device
+    default: 0
+    form: switch
+    options:
+      0: No
+      1: Yes
+    dev_purpose: true
+  country_codes:
+    field: country_codes
+    label: Country code options for phone
+    desc: Separate with comma
+    default: 62
+    form: text
+  recaptcha_site_key:
+    field: recaptcha_site_key
+    label: Recaptcha Site Key
+    form: text
+  recaptcha_secret_key:
+    field: recaptcha_secret_key
+    label: Recaptcha Secret Key
+    form: mask
+  enable_google_signin:
+    field: enable_google_signin
+    label: Enable Google Sign-In
+    form: switch
+    default: 0
+    options:
+      0: Off
+      1: On
+  google_signin_client_id:
+    field: google_signin_client_id
+    label: Google Sign-In Client ID
+    form: mask
+  google_signin_client_secret:
+    field: google_signin_client_secret
+    label: Google Sign-In Client Secret
+    form: mask
+privileges:
+  - show
+  - add
+  - edit
+  - delete
+  - activate
+  - block
+  - purge
+  - export
+  - show_role
+  - add_role
+  - edit_role
+  - delete_role
+  - set_role
+  - manage_privileges

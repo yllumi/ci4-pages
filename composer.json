@@ -1,0 +1,23 @@
+{
+    "name": "yllumi/ci4-pages",
+    "description": "Page based router for CodeIgniter 4",
+    "type": "library",
+    "require": {
+        "codeigniter4/framework": "^4.5",
+        "firebase/php-jwt": "^6.10",
+        "symfony/yaml": "^7.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yllumi\\Ci4Pages\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Toni Haryanto",
+            "email": "toha.samba@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

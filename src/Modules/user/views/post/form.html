@@ -1,0 +1,56 @@
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8 col-md-offset-2">
+
+            <h3><?php echo $page_title;?></h3>
+
+            <?php echo $this->session->flashdata('message');?>
+
+            <?= form_open(current_url()); ?>
+
+                <input type="hidden" name="post_id" value="<?php echo (isset($post->id)) ? $post->id : ''; ?>"/>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input name="title" type="text" class="form-control" value="<?php echo (isset($post->title)) ? $post->title : '';?>"/>
+                </div>
+                <div class="form-group">
+                    <label>Cover</label>
+                    <div class="mb-3">
+                        <a href="#" class="btn btn-info btn-sm btn-file-manager" field="featured_image">Choose</a>
+                    </div>
+                    <input type="text" name="featured_image" id="featured_image" data-bs-toggle="modal" data-bs-target="#FileManagerModal"/>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category_id" class="form-control">
+                        <option value="0" selected="selected">Choose ..</option>
+                        <?php
+                        if (isset($category->term_id))
+                            $current = $category->term_id;
+                        else
+                            $current = null;
+
+                        foreach ($categories as $c)
+                        {
+                            ?>
+                            <option value="<?php echo $c->term_id;?>" <?php echo ($c->term_id == $current) ? 'selected' : '';?> ><?php echo $c->name;?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea name="content" id="" cols="30" rows="10" class="form-control"><?php echo (isset($post->content)) ? $post->content : '';?></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tags</label>
+                    <input type="text" name="tags" class="form-control" value="<?php echo $tags?>"/>
+                </div>
+                <button type="submit" class="btn btn-success">Save Post</button>
+            </form>
+            
+        </div>
+    </div>
+</div>

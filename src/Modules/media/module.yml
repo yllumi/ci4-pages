@@ -1,0 +1,20 @@
+name: File Manager
+icon: folder-open
+description: File manager
+author: Toni Haryanto
+author_url: null
+db_version: 0
+custom_url: null
+show_admin_menu: true
+menu_position: 60
+parent_menu: "20:Contents:file"
+custom_menu: null
+setting:
+  imgbb_apikey:
+    field: imgbb_apikey
+    label: ImgBB API Key
+    description: ImgBB API Key for imgbb field type
+    form: mask
+    dev_purpose: true
+privileges:
+  - media

@@ -1,0 +1,59 @@
+name: Featured Posts
+description: Small data to choose featured post
+icon: star
+table: featured_post
+show_admin_menu: true
+parent_menu: "20:Contents:file"
+menu_position: 35
+custom_url: admin/entry/featured/index/?sort=position&sortdir=asc
+fields:
+  post_id:
+    field: post_id
+    label: Post
+    form: dropdown_ajax
+    relation:
+      entry: post
+      table: mein_posts
+      model: PostModel
+      model_path: post/PostModel
+      caption: [title]
+      searchby: [title]
+      foreign_key: id
+  position:
+    field: position
+    label: Urutan
+    form: number
+    rules: required
+    default: 1
+  poster:
+    field: poster
+    label: Poster
+    form: image
+
+show_on_table: [featured_image,title,category,position]
+view_table: featured_post_view
+view_query: |
+  select f.id, f.post_id, title, p.slug, featured_image, t.name as category, t.slug as category_slug, position, published_at, f.created_at
+  from featured_post f
+  join mein_posts p on p.id = f.post_id
+  left join mein_term_relationships r on p.id = r.object_id
+  left join mein_term_taxonomy x on x.term_taxonomy_id = r.term_taxonomy_id
+  left join mein_terms t on t.term_id = x.term_id
+  group by f.id
+view_fields:
+  featured_image:
+    field: featured_image
+    label: Cover
+    form: image
+  title:
+    field: title
+    label: Judul
+    form: text
+  category:
+    field: category
+    label: Kategori
+    form: text
+  position:
+    field: position
+    label: Urutan
+    form: number

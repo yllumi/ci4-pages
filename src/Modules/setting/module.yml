@@ -1,0 +1,15 @@
+name: Settings
+icon: cog
+description: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+author: Ahmad Oriza (MeinCMS Team)
+author_url: null
+db_version: 0
+custom_url: null
+show_admin_menu: true
+menu_position: 15
+parent_menu: "90:Configurations:cog"
+custom_menu: null
+privileges:
+  - show
+  - update
+  - show_dev_fields

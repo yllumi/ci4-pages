@@ -1,0 +1,50 @@
+name: Bot
+icon: gamepad
+description: Bot Management
+author: Toni Haryanto
+author_url: https://toharyan.blogspot.co.id
+db_version: 1
+custom_url: admin/bot/bot
+show_admin_menu: false
+menu_position: 80
+parent_menu: "20:Contents:file"
+custom_menu: null
+privileges:
+  - bot
+  - bot/send_to_premium
+  - bot/broadcast_to_member
+  - bot/sendMessage
+setting: 
+  enable_woowa:
+    field: enable_woowa
+    label: Enable Woowa
+    default: off
+    form: dropdown
+    options:
+      off: Off
+      on: On
+  enable_woowa_async:
+    field: enable_woowa_async
+    label: Enable Woowa Asynchronous
+    default: off
+    form: dropdown
+    options:
+      off: Off
+      on: On
+  woowa_license:
+    field: woowa_license
+    label: Woowa License
+    form: text
+  woowa_ip:
+    field: woowa_ip
+    label: Enable IP
+    description: http://0.0.0.0
+    form: text
+  woowa_key:
+    field: woowa_key
+    label: Woowa Secret Key
+    form: mask
+  woowa_device_id:
+    field: woowa_device_id
+    label: Woowa Device ID from CRM chrome extension
+    form: text

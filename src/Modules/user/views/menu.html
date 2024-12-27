@@ -1,0 +1,13 @@
+{% set menu = {
+		'user/dashboard': 'Dashboard',
+		'user/edit_profile': 'Edit Profile'
+	}
+%}
+
+<nav class="nav nav-tabs my-5">
+	{foreach uri,caption in menu}
+	<li class="nav-item">
+		<a class="nav-link {uri_string == uri ? 'active' : ''}" href="<?= site_url($uri); ?>">{caption}</a>
+	</li>
+	{/foreach}
+</nav>

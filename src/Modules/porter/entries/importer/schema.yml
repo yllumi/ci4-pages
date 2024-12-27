@@ -1,0 +1,38 @@
+name: Data Uploader
+description: Custom data uploader
+icon: upload
+table: mein_importer
+parent_menu: "90:Configurations:cog"
+menu_position: 110
+show_admin_menu: true
+show_on_table: [title,description]
+fields:
+  title:
+    field: title
+    label: Title
+    form: text
+    rules: required
+  slug:
+    field: slug
+    label: Slug
+    form: slug
+    rules: required
+    referer: title
+  description:
+    field: description
+    label: Description
+    form: textarea
+  schema:
+    field: schema
+    label: YAML Schema
+    form: code
+    fullwidth: true
+    mode: yaml
+action_buttons:
+  row:
+    upload: 
+      caption: Upload data
+      icon: upload
+    template: 
+      caption: CSV Template
+      icon: table

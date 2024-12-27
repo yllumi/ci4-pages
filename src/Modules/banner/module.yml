@@ -1,0 +1,16 @@
+name: Banner Manager
+icon: image
+description: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+author: Ahmad Oriza (MeinCMS Team)
+author_url: null
+db_version: 1
+custom_url: null
+show_admin_menu: true
+menu_position: 50
+parent_menu: "60:Appearance:tint"
+custom_menu: null
+privileges:
+  - show
+  - add
+  - edit
+  - delete

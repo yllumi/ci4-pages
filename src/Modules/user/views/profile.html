@@ -1,0 +1,31 @@
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8 col-md-offset-2">
+
+            <div class="login-form">
+
+                <?php if (!empty($profile)) :?>
+
+                    <h2>Profile</h2>
+                    
+                    <img src="<?php echo $this->ci_auth->getProfilePicture($profile['avatar'])?>" alt="Profile Image" class="img-reponsive" />
+
+                    <dl>
+                        <dt>Name</dt>
+                        <dd><?php echo $profile['name'];?></dd>
+                        <dt>Username</dt>
+                        <dd><?php echo $profile['username'];?></dd>
+                        <dt>Forum Points</dt>
+                        <dd><?php echo (isset($qa->points)) ? $qa->points : '-';?></dd>
+                        <dt>Registered at</dt>
+                        <dd><?php echo time_ago($profile['created_at']);?></dd>
+                    </dl>
+
+                <?php else: ?>
+                    <p>Profile tidak ditemukan ..</p>
+                <?php endif; ?>
+            </div>
+
+        </div>
+    </div>
+</div>

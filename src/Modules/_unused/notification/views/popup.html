@@ -1,0 +1,78 @@
+<div class="bar__module notif-menu">
+	<a href="#" class="btn-notif" id="notifbtn">
+		<span class="fa fa-bell fa-fw"></span>
+		<span class="new-label notif-alert" style="display:none"></span>
+	</a>
+
+	<div class="notif-wrapper-list box-shadow" id="notifbox">
+		<div class="notif-triangle"></div>
+		<div class="notif-label-title">
+			<div class="row">
+				<div class="col-sm-6">
+					<strong>Notifikasi</strong>
+				</div>
+				<!-- <div class="col-sm-6">
+					<div class="text-end">
+						<a href="#">Tandai Terbaca</a>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		<div class="notif-list">
+			<ul></ul>
+		</div>
+		<div class="notif-footer">
+			<a href="<?= site_url('notification'); ?>">Tampilkan Semua Notifikasi</a>
+		</div>
+	</div>
+</div>
+
+<script>
+$(function(){
+	var lastOpenNotif = localStorage.getItem("lastOpenNotif");
+	var hasOpenNotif = false;
+	$.ajax({
+		url: '<?= site_url('notification/getNotification/0'); ?>/' + lastOpenNotif,
+		success : function(data){
+			$('.notif-loading').hide();
+			var notifStr = JSON.parse(data);
+			console.log(notifStr.latest);
+			console.log(lastOpenNotif);
+			if(notifStr.result.length < 1) {
+				$('.notif-list').find('ul').append('<li>Belum ada notifikasi.</li>');
+				$('.notif-footer').hide();
+				return false;
+			}
+			if(notifStr.unread > 0){
+				$('.btn-notif').find('.notif-alert').show().text(notifStr.unread);
+			}
+			notifStr.result.forEach(function(notif){
+				var notifMessage = `
+				<li class="${notif.notif_type} ${(lastOpenNotif < notif.rawdate ? 'active' : '')}">
+					<a href="${notif.url}" class="media">
+					  	<div class="me-3 pt-1"><i class="fas fa-${(notif.icon ? notif.icon : 'bullhorn')} fa-wr fa-lg text-secondary"></i></div>
+					  	<div class="media-body">
+					    	<div class="notif-text">
+								${notif.message}
+							</div>
+							<div class="notif-date">${notif.date}</div>
+					  	</div>
+					</a>
+				</li>
+				`;
+				$('.notif-list').find('ul').append(notifMessage);
+			})
+		}
+	})
+	$('.btn-notif').on('click', function(){
+		if(! hasOpenNotif)
+		{
+			$(this).find('.notif-alert').hide().text('');
+			var d = new Date();
+		    var now = Math.round(d.getTime()/1000);
+			localStorage.setItem("lastOpenNotif", now);
+			hasOpenNotif = true;
+		}
+	})
+})
+</script>

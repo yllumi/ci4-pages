@@ -1,0 +1,42 @@
+{layout 'layouts/basic.html'}
+
+{block content}
+<style>
+    .thumbnail-search {
+        width: 20%;object-fit: cover;border: 2px solid #fafafa; border-radius: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-md-center my-3">
+        <div class="col-md-6">
+            <form action="/search">
+                <div class="input-group">
+                    <input type="text" name="q" value="{=$q}" class="form-control border-end-0" placeholder="Cari artikel..">
+                    <input type="hidden" name="type" value="{$type}">
+                    <div class="input-group-prepend">
+                        <button type="submit" class="input-group-text bg-white rounded-0 border-start-0 rounded-end"><i class="fa fa-search"></i> &nbsp;</button>
+                    </div>
+                </div>
+            </form>
+            <ul class="nav nav-pills my-2 py-2 border-bottom" id="pills-tab" role="tablist">
+                {if $datatype}
+                {foreach $datatype as $typekey => $typelabel}
+                <li class="nav-item" role="presentation">
+                  <a href="{site_url().'search?q='.$q.'&type='.$typekey}" class="nav-link {$typekey == $type ? 'active' : ''}" role="tab" aria-controls="pills-{$typekey ?? ''}" aria-selected="true">{$typelabel ?? ''}</a>
+                </li>
+                {/foreach}
+                {/if}
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-artikel" role="tabpanel" aria-labelledby="pills-artikel-tab">
+                    
+                    {include $type.'.html'}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}

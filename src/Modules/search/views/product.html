@@ -1,0 +1,19 @@
+{if $result}
+{foreach $result as $product}
+<div class="d-flex gap-2 mb-2">
+    <img src="{= $product['product_image'] }" alt="images" class="thumbnail-search">
+    <div class="d-flex flex-column">
+        <a href="#" class="link h5">
+            {= $product['product_name'] }
+        </a>
+        <div>
+            <p class="m-0 intro">{= $product['product_desc'] }</p>
+        </div>
+    </div>
+</div>
+{/foreach}
+{elseif !$q}
+<div><em>Cari data produk dengan pada kolom pencarian diatas</em></div>
+{else}
+<div><em>Maaf, data dengan kata kunci <u>{$q}</u> tidak ditemukan</em></div>
+{/if}

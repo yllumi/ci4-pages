@@ -1,0 +1,1 @@
+<input id="<?= str_replace(['[',']'], ['__',''], $config['field']);?>" type="hidden" name="<?php echo $config['field'];?>" value="<?php echo $value; ?>" class="form-control" data-caption="<?= $config['label'];?>"/>

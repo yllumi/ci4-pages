@@ -1,0 +1,72 @@
+{layout '../layouts/basic.html'}
+
+{block content}
+
+{% set orders = s('payment.my_order')}
+
+<div class="page-section mb-5">
+  <div class="container">
+    
+    <div class="page-separator">
+      <div class="page-separator__text">Notification</div>
+    </div>
+  
+    <div class="card table-responsive">
+
+      {if results}
+
+      <table class="table table-flush table-nowrap">
+        <thead>
+          <tr>
+            <th>Message</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          {foreach result in results}
+
+          <tr>
+            <td><a href="{site_url(result.meta.uri)}">{result.meta.message|noescape}</a></td>
+            <td class="text-end">
+              <div class="d-inline-flex align-items-center">
+                <a href="{site_url(result.meta.uri)}" class="btn btn-sm btn-outline-secondary me-16pt">Visit <i class="icon--right material-icons">keyboard_arrow_right</i></a>
+              </div>
+            </td>
+          </tr>
+
+          {/foreach}
+
+        </tbody>
+      </table>
+
+      {else}
+        <div class="p-3">Belum ada notifikasi ... <br/><br/><a href="{$site_url}courses" class="btn btn-info btn-sm"><i class="fas fa-external-link-square-alt"></i>&nbsp;&nbsp;Jelajahi kelas</a></div>
+      {/if}
+    </div>
+
+    <style>
+    .pagination-wrapper strong {
+      background:#444;
+      padding:5px 8px 5px 8px;
+      color:#FFF;
+      border-radius: 5px;
+      margin-right:5px;
+    }
+
+    .pagination-wrapper a {
+      background:#dedede;
+      padding:5px 8px 5px 8px;
+      border-radius: 5px;
+      margin-right:5px;
+    }
+    </style>
+    
+    <div class="pagination-wrapper mt-3">
+      {pagination|noescape}
+    </div>
+
+  </div>
+</div>
+  
+{/block}

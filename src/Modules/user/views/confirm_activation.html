@@ -1,0 +1,21 @@
+{layout '../layouts/login.html'}
+
+{block content}
+<style>
+.btn-konfirmasi { text-decoration:none !important; height:50px; }
+</style>
+<section class="bg--secondary">
+	<div class="py-5 bg--white border-radius">
+        <h1 class="mt-0 mb-4 text-center">Konfirmasi Akun</h1>
+
+        <p class="text-center text-dark">Anda akan mengaktifkan akun <strong>{$user['email']}</strong> dengan nama <strong>{$user['name']}</strong>. Untuk melanjutkan, konfirmasikan dengan menekan tombol berikut:</p>
+
+		<div class="my-4 text-center">
+			<a href="{site_url('user/activate?token=' . $token)}" class="btn btn-primary btn-konfirmasi text-white btn-lg">Konfirmasi</a>
+		</div>
+
+		<div>Belum pernah mendaftar? <a href="{site_url('user/register')}">Registrasi disini</a></div>
+	</div>
+</section>
+
+{/block}

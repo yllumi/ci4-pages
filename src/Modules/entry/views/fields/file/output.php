@@ -1,0 +1,1 @@
+<a class="btn btn-sm btn-secondary" href="<?php echo $result[$config['field']]; ?>" title="<?php echo $result[$config['field']]; ?>" target="_blank"><span class="fa fa-file"></span></a>

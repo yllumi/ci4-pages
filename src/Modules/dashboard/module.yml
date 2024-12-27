@@ -1,0 +1,12 @@
+name: Dashboard
+icon: dashboard
+description: Dashboard admin menu
+author: Ahmad Oriza (MeinCMS Team)
+author_url: null 
+db_version: 0
+custom_url: null
+show_admin_menu: true
+menu_position: 10
+parent_menu: null
+privileges:
+  - dashboard
