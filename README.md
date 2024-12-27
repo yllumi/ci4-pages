@@ -1,26 +1,27 @@
+
 # ci4-pages
 
-**ci4-pages** adalah package untuk CodeIgniter 4 yang menyediakan mekanisme **routing berbasis page**. Package ini mempermudah Anda mengelola routing dengan pendekatan berbasis file dan struktur folder yang lebih fleksibel, sehingga cocok untuk proyek dengan kebutuhan routing dinamis. Bayangkan seperti Next.js atau Laravel Folio tapi dengan mempertahankan kekhasan dari gaya coding CodeIgniter 4. 
+**ci4-pages** is a package for CodeIgniter 4 that provides a **page-based routing mechanism**. This package simplifies routing management with a file-based and folder-structured approach, making it suitable for projects requiring dynamic routing. Think of it as similar to Next.js or Laravel Folio but maintaining the coding style unique to CodeIgniter 4.
 
-## Instalasi
-Instal package ini melalui Composer dengan perintah berikut:
+## Installation
+Install this package via Composer with the following command:
 
 ```bash
-composer require vendor/ci4-pages
+composer require yllumi/ci4-pages
 ```
 
-## Konfigurasi
-1. Daftarkan class filter `PagesRouter.php` di **`app/Config/Filters.php`**
+## Configuration
+1. Register the `PagesRouter.php` filter class in **`app/Config/Filters.php`**:
 
 ```php {4}
-    # Daftarkan class alias
+    # Register the class alias
     public array $aliases = [
         ...
         'pagesRouter' => \Yllumi\Ci4Pages\Filters\PagesRouter::class,
     ];
     ...
 
-    # Daftarkan alias di bagian $required
+    # Register the alias in the $required section
     public array $required = [
         'before' => [
             ...
@@ -30,9 +31,9 @@ composer require vendor/ci4-pages
     ];
 ```
 
-## Cara Penggunaan
+## Usage
 
-Buat folder `app/Pages/`. Folder ini akan menjadi tempat untuk menyimpan semua file controller page Anda.
+Create a folder named `app/Pages/`. This folder will be used to store all your page controller files.
 
 ```plaintext
 app/
@@ -50,11 +51,11 @@ app/
 │   │   │   ├── index.php
 ```
 
-Setiap folder di dalam app/Pages/ akan menjadi rute halaman. Misalnya folder app/Pages/home akan dapat diakses di domain.com/home. Begitu juga folder app/Pages/profile/achievement/ akan dapat diakses di domain.com/profile/achievement/.
+Each folder inside `app/Pages/` will represent a page route. For example, the folder `app/Pages/home` will be accessible at `domain.com/home`. Similarly, the folder `app/Pages/profile/achievement/` will be accessible at `domain.com/profile/achievement/`.
 
-Ada satu file yang wajib ada di dalam folder halaman, yaitu PageController.php yang akan melayani permintaan halaman. Selain PageController, kamu juga dapat membuat file APIController.php untuk melayani permintaan API. Di luar itu kamu dapat membuat file .php lain untuk views dan sebagainya.
+Each page folder must include a `PageController.php` file to handle page requests. Additionally, you can create an `APIController.php` file for handling API requests. Other `.php` files can be used for views and other purposes.
 
-Mari kita lihat salah satu contoh kode di bawah ini
+Let’s take a look at an example:
 
 **`app/Pages/home/PageController.php`**
 ```php
@@ -72,25 +73,24 @@ class PageController extends BasePageController
 
         return pageView('home/index', $data);
     }
-
 }
 ```
 
 **`app/Pages/home/index.php`**
 ```php
 <h1>Hello <?= $name ?>!</h1>
-<p>Selamat berkarya dengan CodeIgniter!</p>
+<p>Enjoy coding with CodeIgniter!</p>
 ```
 
-Pada contoh di atas, kita membuat dua buah file, yang pertama adalah PageController.php yaitu class controller dengan satu method `index()`. Kamu dapat membuat method apapun di dalam controller, tapi hanya method `index()` yang akan melayani rekues GET. 
+In the example above, we created two files. The first is `PageController.php`, a controller class with a single `index()` method. You can create any method inside the controller, but only the `index()` method will handle GET requests.
 
-Method `index()` boleh memiliki parameter yang nantinya akan menangkap uri segment setelah segment halaman. Misalnya pada contoh di atas kita dapat memanggil dengan domain.com/home/Toni dimana string 'Toni' akan diterima oleh parameter `$name`.
+The `index()` method can accept parameters that will capture URI segments following the page segment. For example, the URL `domain.com/home/Toni` will pass the string 'Toni' to the `$name` parameter.
 
-Pada contoh di atas method `index()` mengembalikan balikan fungsi `pageView()`. Fungsi ini sama seperti `view()` di CodeIgniter, tapi sudah disesuaikan agar dapat menerima path dari file view yang ada di bawah folder app/Pages/. `return pageView('home/index', $data);` berarti mengembalikan file view app/Pages/**home/index**.php.
+The `index()` method in this example returns the `pageView()` function, similar to CodeIgniter's `view()` but adapted to work with view files under the `app/Pages/` folder. For instance, `return pageView('home/index', $data);` renders the view file `app/Pages/**home/index**.php`.
 
-Selain method `index()` kamu juga dapat membuat method `process()` untuk menerima rekues POST ke url halaman yang dimaksud.
+In addition to the `index()` method, you can also define a `process()` method to handle POST requests to the specified page URL.
 
-Ini adalah route yang didaftarkan otomatis yang membuat semua ini menjadi mungkin:
+Here’s the route registered automatically that makes this work:
 ```php
 $routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
 $routeCollection->post($uriPage, $controllerNamespace . '::process');
@@ -98,7 +98,7 @@ $routeCollection->post($uriPage, $controllerNamespace . '::process');
 
 #### API Endpoint
 
-Kamu juga dapat menerima rekues RESTful dengan membuat class APIController.php.
+You can also handle RESTful requests by creating an `APIController.php` class.
 
 **`app/Pages/profile/APIController.php`**
 ```php
@@ -129,14 +129,14 @@ class APIController extends ResourceController
 }
 ```
 
-APIController dipanggil di endpoint halaman dengan prefix 'api/'. Pada contoh kode di atas endpoint untuk halaman profile adalah domain.com/api/profile.
+The `APIController` can be accessed through the page endpoint with the prefix `api/`. For example, the API endpoint for the profile page is `domain.com/api/profile`.
 
-Class APIController diturunkan dari ResourceController bawaan CodeIgniter apa adanya sehingga kamu dapat merujuk ke dokumentasi CodeIgniter 4 untuk penggunaannya. Sistem otomatis membuat resource route untuk setiap folder halaman yang dibuat.
+The `APIController` class extends CodeIgniter's `ResourceController` directly, so you can refer to the CodeIgniter 4 documentation for its usage. The system automatically creates resource routes for every page folder.
 
 ```php
 $routeCollection->resource('api/' . $uriPage, ['controller' => $controllerNamespace]);
 
-# Route di atas equivalen dengan
+# The above route is equivalent to
 $routes->get('api/' . $uriPage, $controllerNamespace . '::index');
 $routes->get('api/' . $uriPage . '/new', $controllerNamespace . '::new');
 $routes->post('api/' . $uriPage, $controllerNamespace . '::create');
@@ -147,10 +147,10 @@ $routes->patch('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::upda
 $routes->delete('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::delete/$1'); 
 ```
 
-Dengan resource controller di atas, method-method yang dapa kamu buat untuk melayani setiap resource endpoint adalah `index()`, `new()`, `create()`, `show()`, `edit()`, `update()`, `update()`, dan `delete()`.
+Using the resource controller above, the available methods to serve each resource endpoint are `index()`, `new()`, `create()`, `show()`, `edit()`, `update()`, `update()`, and `delete()`.
 
-## Kontribusi
-Kami menerima kontribusi dari komunitas! Jika Anda memiliki ide atau menemukan bug, silakan kirimkan pull request atau buka issue di repository ini.
+## Contribution
+We welcome community contributions! If you have ideas or find bugs, feel free to submit a pull request or open an issue in this repository.
 
-## Lisensi
-Sama seperti repository CodeIgniter 4, package ini dilisensikan di bawah lisensi MIT. Lihat file [LICENSE](LICENSE) untuk informasi lebih lanjut.
+## License
+Similar to the CodeIgniter 4 repository, this package is licensed under the MIT license. See the [LICENSE](LICENSE) file for more details.
