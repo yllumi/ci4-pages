@@ -1,6 +1,6 @@
 <?php
 
-namespace Heroic\Filters;
+namespace Yllumi\Ci4Pages\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Heroic\Models;
+namespace Yllumi\Ci4Pages\Models;
 
 use CodeIgniter\Model;
 

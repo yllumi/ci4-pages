@@ -1,6 +1,6 @@
 <?php
 
-namespace Heroic\Controllers;
+namespace Yllumi\Ci4Pages\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
@@ -25,7 +25,7 @@ class BasePageController extends BaseController
         parent::initController($request, $response, $logger);
 
         // load helper 
-        helper('Heroic\Helpers\pageview');
+        helper('Yllumi\Ci4Pages\Helpers\pageview');
     }
 
     public function index(){ throw PageNotFoundException::forPageNotFound('Method not implemented: index'); }

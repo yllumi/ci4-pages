@@ -1,6 +1,6 @@
 <?php
 
-namespace Heroic\Libraries;
+namespace Yllumi\Ci4Pages\Libraries;
 
 class Setting 
 {
@@ -8,7 +8,7 @@ class Setting
 
     public function __construct()
     {
-        $SettingModel = model('Heroic\Models\SettingModel');
+        $SettingModel = model('Yllumi\Ci4Pages\Models\SettingModel');
         $this->data = $SettingModel->getAll();
     }
 

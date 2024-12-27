@@ -1,6 +1,6 @@
 <?php
 
-namespace Config;
+namespace Yllumi\Ci4Pages\Config;
 
 use CodeIgniter\Config\BaseConfig;
 
