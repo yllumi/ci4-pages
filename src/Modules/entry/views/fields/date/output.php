@@ -1,1 +1,0 @@
-<?= PHP81_BC\strftime("%d %B %Y", strtotime($result[$config['field']] ?? ''), ci()->config->item('locale')); ?>
