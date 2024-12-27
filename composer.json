@@ -20,5 +20,8 @@
             "email": "toha.samba@gmail.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "require-dev": {
+        "codeigniter/coding-standard": "^1.8"
+    }
 }

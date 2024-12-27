@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of yllumi/ci4-pages.
  *
- * (c) CodeIgniter Foundation <admin@codeigniter.com>
+ * (c) 2024 Toni Haryanto <toha.samba@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,16 +13,11 @@ declare(strict_types=1);
 
 namespace Yllumi\Ci4Pages\Libraries;
 
-use CodeIgniter\Autoloader\FileLocatorInterface;
 use CodeIgniter\Debug\Toolbar\Collectors\Views;
 use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\View\Exceptions\ViewException;
 use CodeIgniter\View\View;
-use CodeIgniter\View\ViewDecoratorTrait;
 use Config\Toolbar;
-use Config\View as ViewConfig;
-use Psr\Log\LoggerInterface;
-use RuntimeException;
 
 /**
  * Class View
@@ -174,5 +169,4 @@ class PageRenderer extends View
 
         return $output;
     }
-
 }
