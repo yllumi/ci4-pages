@@ -18,7 +18,7 @@ class PagesRouter implements FilterInterface
         // Set default page for root uri
         if(empty($uri))
         {
-            $uriPage = config('App')->defaultPage;
+            $uriPage = config('App')->defaultPage ?? 'home';
             $uri = '/';
         }
 
