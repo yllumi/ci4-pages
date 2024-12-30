@@ -96,7 +96,7 @@ $routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
 $routeCollection->post($uriPage . '(:any)', $controllerNamespace . '::process$1');
 ```
 
-Bila kamu membutuhkan method lain untuk melayani reques GET dan POST selain yang sudah disediakan di atas, kamu dapat menambahkan method baru di dalam class PageController dengan menggunakan prefix get_ dan post_. Misalkan method `get_methodname()` akan dapat dipanggil dengan menggunakan query string `?get=methodname` dan method `post_methodname()` akan dapat dipanggil dengan menggunakan query string `?post=method`.
+Bila kamu membutuhkan method lain untuk melayani reques GET dan POST selain yang sudah disediakan di atas, kamu dapat menambahkan method baru di dalam class PageController dengan menggunakan prefix get_ dan post_. Misalkan method `get_methodname()` akan dapat dipanggil dengan menggunakan query string `?get=methodname` dan method `post_methodname()` akan dapat dipanggil dengan menggunakan query string `?post=methodname`.
 
 Berikut ini contoh lengkap dari sebuah controller:
 ```php
