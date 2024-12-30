@@ -81,16 +81,14 @@ class PagesRouter implements FilterInterface
                 // Route to resource controller
                 else if($isApi) {
                     $routeCollection->resource('api/' . $uriPage, ['controller' => $controllerNamespace]);
-                    
-                    // Route for uri with prefix ajax/
-                } else if($isAjax) {
-                    $routeCollection->get('ajax/' . $uriPage, $controllerNamespace . '::supply');
-                    // dd($uriSegments, $uri, $isApi, $isAjax, $uriPage, $controllerNamespace);
 
                 // Route to base controller
                 } else {
-                    $routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
-                    $routeCollection->post($uriPage, $controllerNamespace . '::process');
+                    $getMethod = $request->getGet('get') ? 'get_'.$request->getGet('get') : 'index';
+                    $routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::'.$getMethod.'$1');
+
+                    $postMethod = $request->getPost('post') ? 'post_'.$request->getPost('post') : 'process';
+                    $routeCollection->post($uriPage . '(:any)', $controllerNamespace . '::'.$postMethod.'$1');
                     // dd($uriSegments, $uri, $isApi, $isAjax, $uriPage);
                 }
 
