@@ -62,7 +62,7 @@ class PageRouter extends Router
         }
 
         // HACK: Check for page based routes
-        if($this->pageBasedRoute($uri)) {
+        if ($this->pageBasedRoute($uri)) {
             return $this->controllerName();
         }
 
@@ -87,50 +87,50 @@ class PageRouter extends Router
      * Attempts to match a URI path against Controllers and directories
      * found in APPPATH/Pages, to find a matching page route.
      *
-     * @return boolean
+     * @return bool
      */
     public function pageBasedRoute(string $uri)
     {
         $pageFound = false;
         $httpVerb  = strtolower($this->collection->getHTTPVerb());
-        $uri = trim($uri, '/');
-        
+        $uri       = trim($uri, '/');
+
         // Set default page for root uri
-        if(empty($uri)) {
+        if (empty($uri)) {
             $uri = config('App')->defaultPage ?? 'home';
         }
-        
+
         // Set default variables
-        $pagesPath = config('App')->pagesPath ?? APPPATH . 'Pages';
+        $pagesPath      = config('App')->pagesPath ?? APPPATH . 'Pages';
         $controllerName = 'PageController';
-        $this->method  = $httpVerb . ucfirst($this->collection->getDefaultMethod());
-        $this->params = [];
-        
+        $this->method   = $httpVerb . ucfirst($this->collection->getDefaultMethod());
+        $this->params   = [];
+
         $uriSegments = explode('/', $uri);
+
         while (count($uriSegments) > 0) {
             $folderPath = $pagesPath . '/' . str_replace('/', DIRECTORY_SEPARATOR, implode('/', $uriSegments));
             if (is_dir($folderPath) && file_exists($folderPath . '/' . $controllerName . '.php')) {
-                $uri = implode('/', $uriSegments);
+                $uri                 = implode('/', $uriSegments);
                 $controllerNamespace = '\\App\\Pages\\' . str_replace('/', '\\', $uri) . '\\' . $controllerName;
-                $this->controller = $controllerNamespace;                    
-                $this->params = array_reverse($this->params);
+                $this->controller    = $controllerNamespace;
+                $this->params        = array_reverse($this->params);
 
                 // Check if method exists in class
-                if(isset($this->params[0]) && method_exists($controllerNamespace,  $httpVerb . ucfirst($this->params[0]))) {
+                if (isset($this->params[0]) && method_exists($controllerNamespace, $httpVerb . ucfirst($this->params[0]))) {
                     $this->method = $httpVerb . ucfirst($this->params[0]);
                     array_shift($this->params);
                 }
 
                 $pageFound = true;
-                break;  
+                break;
             }
 
             $this->params[] = array_pop($uriSegments);
         }
-        
+
         return $pageFound;
     }
-
 
     /**
      * Checks disallowed characters
@@ -147,5 +147,4 @@ class PageRouter extends Router
             }
         }
     }
-
 }
