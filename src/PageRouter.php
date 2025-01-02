@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of yllumi/ci4-pages.
  *
- * (c) CodeIgniter Foundation <admin@codeigniter.com>
+ * (c) 2024 Toni Haryanto <toha.samba@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -16,16 +16,16 @@ namespace Yllumi\Ci4Pages;
 use Closure;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Exceptions\BadRequestException;
-use CodeIgniter\HTTP\Exceptions\RedirectException;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Router\Router;
 
 /**
- * Request router.
+ * Page based router.
  *
- * @see \CodeIgniter\Router\RouterTest
+ * This class extends the CodeIgniter's Router class
+ * to handle page based routes.
  */
-class MyRouter extends Router
+class PageRouter extends Router
 {
     /**
      * Finds the controller corresponding to the URI.
@@ -36,7 +36,6 @@ class MyRouter extends Router
      *
      * @throws BadRequestException
      * @throws PageNotFoundException
-     * @throws RedirectException
      */
     public function handle(?string $uri = null)
     {
@@ -110,15 +109,14 @@ class MyRouter extends Router
         $uriSegments = explode('/', $uri);
         while (count($uriSegments) > 0) {
             $folderPath = $pagesPath . '/' . str_replace('/', DIRECTORY_SEPARATOR, implode('/', $uriSegments));
-            if (is_dir($folderPath) && file_exists($folderPath . '/' . $controllerName . '.php')) 
-            {
+            if (is_dir($folderPath) && file_exists($folderPath . '/' . $controllerName . '.php')) {
                 $uri = implode('/', $uriSegments);
                 $controllerNamespace = '\\App\\Pages\\' . str_replace('/', '\\', $uri) . '\\' . $controllerName;
                 $this->controller = $controllerNamespace;                    
                 $this->params = array_reverse($this->params);
 
                 // Check if method exists in class
-                if(isset($this->params[0]) && method_exists($controllerNamespace,  $httpVerb . ucfirst($this->params[0]) )) {
+                if(isset($this->params[0]) && method_exists($controllerNamespace,  $httpVerb . ucfirst($this->params[0]))) {
                     $this->method = $httpVerb . ucfirst($this->params[0]);
                     array_shift($this->params);
                 }
