@@ -1,18 +1,27 @@
 <?php
 
-use Config\View;
-use Config\Services as AppServices;
+/**
+ * This file is part of yllumi/ci4-pages.
+ *
+ * (c) 2024 Toni Haryanto <toha.samba@gmail.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
 
-if (!function_exists('pageView')) {
+use Config\Services as AppServices;
+use Config\View;
+
+if (! function_exists('pageView')) {
     function pageView(string $name, array $data = [], array $options = []): string
     {
-        $config   = config(View::class);
-        $saveData = $config->saveData;
+        $config       = config(View::class);
+        $saveData     = $config->saveData;
         $pageViewPath = APPPATH . 'Pages/';
-        
+
         // Create new view instance with custom view path
-        $renderer = new \CodeIgniter\View\View($config, $pageViewPath, AppServices::get('locator'), CI_DEBUG, AppServices::get('logger'));
-        
+        $renderer = new CodeIgniter\View\View($config, $pageViewPath, AppServices::get('locator'), CI_DEBUG, AppServices::get('logger'));
+
         if (array_key_exists('saveData', $options)) {
             $saveData = (bool) $options['saveData'];
             unset($options['saveData']);
