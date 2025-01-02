@@ -11,24 +11,33 @@ composer require yllumi/ci4-pages
 ```
 
 ## Configuration
-1. Register the `PagesRouter.php` filter class in **`app/Config/Filters.php`**:
 
-```php {4}
-    # Register the class alias
-    public array $aliases = [
-        ...
-        'pagesRouter' => \Yllumi\Ci4Pages\Filters\PagesRouter::class,
-    ];
-    ...
+Add the following method inside the Services class in the app/Config/Services.php file.
 
-    # Register the alias in the $required section
-    public array $required = [
-        'before' => [
-            ...
-            'pagesRouter',
-        ],
-        ...
-    ];
+```php
+use CodeIgniter\Router\RouteCollectionInterface;
+use Config\Services as AppServices;
+use Yllumi\Ci4Pages\PageRouter;
+
+...
+
+public static function router(?RouteCollectionInterface $routes = null, ?Request $request = null, bool $getShared = true)
+{
+    if ($getShared) {
+        return static::getSharedInstance('router', $routes, $request);
+    }
+
+    $routes ??= AppServices::get('routes');
+    $request ??= AppServices::get('request');
+
+    return new PageRouter($routes, $request);
+}
+```
+
+Then, register the pageview_helper in **`app/Controllers/BaseController.php`**
+
+```php
+protected $helpers = ['Yllumi\Ci4Pages\Helpers\pageview'];
 ```
 
 ## Usage

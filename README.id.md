@@ -10,7 +10,7 @@ composer require yllumi/ci4-pages
 ```
 
 ## Konfigurasi
-Tambahkan kode berikut ini di file **`app/Config/Services.php`**
+Tambahkan method berikut ini di dalam class `Services` di dalam file **`app/Config/Services.php`**
 
 ```php
 public static function router(?RouteCollectionInterface $routes = null, ?Request $request = null, bool $getShared = true)
