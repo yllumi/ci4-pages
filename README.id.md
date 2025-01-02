@@ -1,6 +1,6 @@
 # ci4-pages
 
-**ci4-pages** adalah package untuk CodeIgniter 4 yang menyediakan mekanisme **routing berbasis page**. Package ini mempermudah Anda mengelola routing dengan pendekatan berbasis file dan struktur folder yang lebih fleksibel, sehingga cocok untuk proyek dengan kebutuhan routing dinamis. Bayangkan seperti Next.js atau Laravel Folio tapi dengan mempertahankan kekhasan dari gaya coding CodeIgniter 4. 
+**ci4-pages** adalah package untuk CodeIgniter 4 yang menyediakan mekanisme **routing berbasis page**. Package ini mempermudah Anda mengelola routing dengan pendekatan berbasis file dan struktur folder yang lebih fleksibel, sehingga cocok untuk proyek dengan kebutuhan routing dinamis. Bayangkan seperti Next.js atau Laravel Folio tapi dengan mempertahankan kekhasan dari gaya coding CodeIgniter 4.
 
 ## Instalasi
 Instal package ini melalui Composer dengan perintah berikut:
@@ -10,23 +10,8 @@ composer require yllumi/ci4-pages
 ```
 
 ## Konfigurasi
-Tambahkan method berikut ini di dalam class `Services` di dalam file **`app/Config/Services.php`**
 
-```php
-public static function router(?RouteCollectionInterface $routes = null, ?Request $request = null, bool $getShared = true)
-{
-    if ($getShared) {
-        return static::getSharedInstance('router', $routes, $request);
-    }
-
-    $routes ??= AppServices::get('routes');
-    $request ??= AppServices::get('request');
-
-    return new PageRouter($routes, $request);
-}
-```
-
-lalu faftarkan pageview_helper di **`app/Controllers/BaseController.php`**
+Daftarkan pageview_helper di **`app/Controllers/BaseController.php`**
 
 ```php
 protected $helpers = ['Yllumi\Ci4Pages\Helpers\pageview'];
@@ -113,19 +98,19 @@ class PageController extends BaseController
 
         return $this->respond($data);
     }
-    
+
     public function getDetail($id = null)
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
         $data['id'] = $id;
-        
+
         return $this->respond($data);
     }
 }
 ```
 
-Selengkapnya tentang API Response Trait dapat dilihat di dokumentasi CodeIgniter ini: [API Responses Trait](https://codeigniter.com/user_guide/outgoing/api_responses.html).. 
+Selengkapnya tentang API Response Trait dapat dilihat di dokumentasi CodeIgniter ini: [API Responses Trait](https://codeigniter.com/user_guide/outgoing/api_responses.html)..
 
 #### Kombinasi dengan Manual Route
 
