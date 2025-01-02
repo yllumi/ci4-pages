@@ -43,19 +43,17 @@ app/
 │   │   ├── index.php
 │   ├── profile/
 │   │   ├── PageController.php
-│   │   ├── APIController.php
 │   │   ├── index.php
 │   │   ├── achievement/
 │   │   │   ├── PageController.php
-│   │   │   ├── APIController.php
 │   │   │   ├── index.php
 ```
 
 Each folder inside `app/Pages/` will represent a page route. For example, the folder `app/Pages/home` will be accessible at `domain.com/home`. Similarly, the folder `app/Pages/profile/achievement/` will be accessible at `domain.com/profile/achievement/`.
 
-Each page folder must include a `PageController.php` file to handle page requests. Additionally, you can create an `APIController.php` file for handling API requests. Other `.php` files can be used for views and other purposes.
+There is one mandatory file that must exist in the pages folder, namely PageController.php, which will handle page requests. Besides that, you can create other .php files for views and so on.
 
-Let’s take a look at an example:
+Let's look at an example code below:
 
 **`app/Pages/home/PageController.php`**
 ```php
@@ -63,95 +61,51 @@ Let’s take a look at an example:
 
 namespace App\Pages\home;
 
-use Yllumi\Ci4Pages\Controllers\BasePageController;
+use App\Controllers\BaseController;
 
-class PageController extends BasePageController
+class PageController extends BaseController
 {
-    public function index($name = null): string
+    public function getIndex($name = null): string
     {
         $data['name'] = $name ?? 'World';
 
         return pageView('home/index', $data);
     }
+
 }
 ```
 
 **`app/Pages/home/index.php`**
 ```php
 <h1>Hello <?= $name ?>!</h1>
-<p>Enjoy coding with CodeIgniter!</p>
+<p>Selamat berkarya dengan CodeIgniter!</p>
 ```
 
-In the example above, we created two files. The first is `PageController.php`, a controller class with a single `index()` method. You can create any method inside the controller, but only the `index()` method will handle GET requests.
+In the example above, we created two files. The first is `PageController.php`, a controller class with one method `getIndex()`. This method handles requests to mydomain.com/home or mydomain.com/home/index.
 
-The `index()` method can accept parameters that will capture URI segments following the page segment. For example, the URL `domain.com/home/Toni` will pass the string 'Toni' to the `$name` parameter.
+The `getIndex()` method can have parameters that capture the URI segment after the page segment. For instance, in the example above, you can call domain.com/home/Toni or domain.com/home/index/Toni, where the string 'Toni' will be received by the `$name` parameter of the `getIndex()` method.
 
-The `index()` method in this example returns the `pageView()` function, similar to CodeIgniter's `view()` but adapted to work with view files under the `app/Pages/` folder. For instance, `return pageView('home/index', $data);` renders the view file `app/Pages/**home/index**.php`.
+In the example above, the `getIndex()` method returns the output of the `pageView()` function. This function is similar to `view()` in CodeIgniter but is adjusted to accept the path of the view file located under the app/Pages/ folder. `return pageView('home/index', $data);` means it returns the view file app/Pages/**home/index**.php.
 
-In addition to the `index()` method, you can also define a `process()` method to handle POST requests to the specified page URL.
-
-Here’s the route registered automatically that makes this work:
-```php
-$routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
-$routeCollection->post($uriPage . '(:any)', $controllerNamespace . '::process$1');
-```
-
-If you need other methods to handle GET and POST requests aside from those provided above, you can add new methods within the PageController class by using the get_ and post_ prefixes. For instance, the `get_methodname()` method can be called using the query string `?get=methodname`, and the `post_methodname()` method can be called using the query string `?post=methodname`.
-
-Below is a complete example of a controller:
-```php
-<?php
-
-namespace App\Pages\home;
-
-use Yllumi\Ci4Pages\Controllers\BasePageController;
-
-class PageController extends BasePageController
-{
-
-     // Can be accessed at the URL /home
-    public function index($id = null): string
-    {
-       
-    }
-
-    // Can be accessed with a POST method at the URL /home
-    public function process($id = null): string
-    {
-       
-    }
-
-    // Can be accessed at the URL /home?get=detail or /home/id?get=detail
-    public function get_detail($id = null): string
-    {
-       
-    }
-
-    // Can be accessed with a POST method 
-    // at the URL /home?post=update or /home/id?post=update
-    public function post_update($id = null): string
-    {
-       
-    }
-
-}
-```
+In addition to the `getIndex()` method, you can also create other methods i.e. `getDetail()` or `postInsert()`. Only methods whose names start with an HTTP verb can handle HTTP requests. The method naming mechanism in this controller is the same as the Auto Route (improved) provided by CodeIgniter 4.
 
 #### API Endpoint
 
-You can also handle RESTful requests by creating an `APIController.php` class.
+You can also return RESTful responses by adding the ResponseTrait to the controller class.
 
-**`app/Pages/profile/APIController.php`**
+**`app/Pages/home/PageController.php`**
 ```php
 <?php
 
 namespace App\Pages\profile;
 
-use CodeIgniter\RESTful\ResourceController;
+use App\Controllers\BaseController;
 
-class APIController extends ResourceController
+class PageController extends BaseController
 {
-    public function index()
+    use \CodeIgniter\API\ResponseTrait;
+
+    public function getIndex()
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
@@ -159,7 +113,7 @@ class APIController extends ResourceController
         return $this->respond($data);
     }
     
-    public function show($id = null)
+    public function getDetail($id = null)
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
@@ -170,25 +124,11 @@ class APIController extends ResourceController
 }
 ```
 
-The `APIController` can be accessed through the page endpoint with the prefix `api/`. For example, the API endpoint for the profile page is `domain.com/api/profile`.
+For more information about the API Response Trait, refer to the CodeIgniter documentation here: [API Responses Trait](https://codeigniter.com/user_guide/outgoing/api_responses.html).
 
-The `APIController` class extends CodeIgniter's `ResourceController` directly, so you can refer to the CodeIgniter 4 documentation for its usage. The system automatically creates resource routes for every page folder.
+#### Combination with Manual Routes
 
-```php
-$routeCollection->resource('api/' . $uriPage, ['controller' => $controllerNamespace]);
-
-# The above route is equivalent to
-$routes->get('api/' . $uriPage, $controllerNamespace . '::index');
-$routes->get('api/' . $uriPage . '/new', $controllerNamespace . '::new');
-$routes->post('api/' . $uriPage, $controllerNamespace . '::create');
-$routes->get('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::show/$1');
-$routes->get('api/' . $uriPage . '/(:segment)/edit', $controllerNamespace . '::edit/$1');
-$routes->put('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::update/$1');
-$routes->patch('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::update/$1');
-$routes->delete('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::delete/$1'); 
-```
-
-Using the resource controller above, the available methods to serve each resource endpoint are `index()`, `new()`, `create()`, `show()`, `edit()`, `update()`, `update()`, and `delete()`.
+You can still use the Manual Route mechanism alongside the Auto Route (Improved) provided by CodeIgniter 4 in conjunction with this page-based routing. The execution order of the routers is [manual route] - [page-based route] - [auto route].
 
 ## Contribution
 We welcome community contributions! If you have ideas or find bugs, feel free to submit a pull request or open an issue in this repository.

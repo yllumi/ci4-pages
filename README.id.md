@@ -10,24 +10,26 @@ composer require yllumi/ci4-pages
 ```
 
 ## Konfigurasi
-1. Daftarkan class filter `PagesRouter.php` di **`app/Config/Filters.php`**
+Tambahkan kode berikut ini di file **`app/Config/Services.php`**
 
-```php {4}
-    # Daftarkan class alias
-    public array $aliases = [
-        ...
-        'pagesRouter' => \Yllumi\Ci4Pages\Filters\PagesRouter::class,
-    ];
-    ...
+```php
+public static function router(?RouteCollectionInterface $routes = null, ?Request $request = null, bool $getShared = true)
+{
+    if ($getShared) {
+        return static::getSharedInstance('router', $routes, $request);
+    }
 
-    # Daftarkan alias di bagian $required
-    public array $required = [
-        'before' => [
-            ...
-            'pagesRouter',
-        ],
-        ...
-    ];
+    $routes ??= AppServices::get('routes');
+    $request ??= AppServices::get('request');
+
+    return new PageRouter($routes, $request);
+}
+```
+
+lalu faftarkan pageview_helper di **`app/Controllers/BaseController.php`**
+
+```php
+protected $helpers = ['Yllumi\Ci4Pages\Helpers\pageview'];
 ```
 
 ## Cara Penggunaan
@@ -42,17 +44,15 @@ app/
 │   │   ├── index.php
 │   ├── profile/
 │   │   ├── PageController.php
-│   │   ├── APIController.php
 │   │   ├── index.php
 │   │   ├── achievement/
 │   │   │   ├── PageController.php
-│   │   │   ├── APIController.php
 │   │   │   ├── index.php
 ```
 
 Setiap folder di dalam app/Pages/ akan menjadi rute halaman. Misalnya folder app/Pages/home akan dapat diakses di domain.com/home. Begitu juga folder app/Pages/profile/achievement/ akan dapat diakses di domain.com/profile/achievement/.
 
-Ada satu file yang wajib ada di dalam folder halaman, yaitu PageController.php yang akan melayani permintaan halaman. Selain PageController, kamu juga dapat membuat file APIController.php untuk melayani permintaan API. Di luar itu kamu dapat membuat file .php lain untuk views dan sebagainya.
+Ada satu file yang wajib ada di dalam folder halaman, yaitu PageController.php yang akan melayani permintaan halaman. Selain itu kamu dapat membuat file .php lain untuk views dan sebagainya.
 
 Mari kita lihat salah satu contoh kode di bawah ini
 
@@ -62,11 +62,11 @@ Mari kita lihat salah satu contoh kode di bawah ini
 
 namespace App\Pages\home;
 
-use Yllumi\Ci4Pages\Controllers\BasePageController;
+use App\Controllers\BaseController;
 
-class PageController extends BasePageController
+class PageController extends BaseController
 {
-    public function index($name = null): string
+    public function getIndex($name = null): string
     {
         $data['name'] = $name ?? 'World';
 
@@ -82,76 +82,31 @@ class PageController extends BasePageController
 <p>Selamat berkarya dengan CodeIgniter!</p>
 ```
 
-Pada contoh di atas, kita membuat dua buah file, yang pertama adalah PageController.php yaitu class controller dengan satu method `index()`. Kamu dapat membuat method apapun di dalam controller, tapi hanya method `index()` yang akan melayani rekues GET. 
+Pada contoh di atas, kita membuat dua buah file, yang pertama adalah PageController.php yaitu class controller dengan satu method `getIndex()`. Method ini akan melayani rekues dari mydomain.com/home atau mydomain.com/home/index.
 
-Method `index()` boleh memiliki parameter yang nantinya akan menangkap uri segment setelah segment halaman. Misalnya pada contoh di atas kita dapat memanggil dengan domain.com/home/Toni dimana string 'Toni' akan diterima oleh parameter `$name`.
+Method `getIndex()` boleh memiliki parameter yang nantinya akan menangkap uri segment setelah segment halaman. Misalnya pada contoh di atas kita dapat memanggil dengan domain.com/home/Toni atau domain.com/home/index/Toni dimana string 'Toni' akan diterima oleh parameter `$name` dari method `getIndex()`.
 
-Pada contoh di atas method `index()` mengembalikan balikan fungsi `pageView()`. Fungsi ini sama seperti `view()` di CodeIgniter, tapi sudah disesuaikan agar dapat menerima path dari file view yang ada di bawah folder app/Pages/. `return pageView('home/index', $data);` berarti mengembalikan file view app/Pages/**home/index**.php.
+Pada contoh di atas method `getIndex()` mengembalikan output dari fungsi `pageView()`. Fungsi ini sama seperti `view()` di CodeIgniter, tapi sudah disesuaikan agar dapat menerima path dari file view yang ada di bawah folder app/Pages/. `return pageView('home/index', $data);` berarti mengembalikan file view app/Pages/**home/index**.php.
 
-Selain method `index()` kamu juga dapat membuat method `process()` untuk menerima rekues POST ke url halaman yang dimaksud.
-
-Ini adalah route yang didaftarkan otomatis yang membuat semua ini menjadi mungkin:
-```php
-$routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
-$routeCollection->post($uriPage . '(:any)', $controllerNamespace . '::process$1');
-```
-
-Bila kamu membutuhkan method lain untuk melayani reques GET dan POST selain yang sudah disediakan di atas, kamu dapat menambahkan method baru di dalam class PageController dengan menggunakan prefix get_ dan post_. Misalkan method `get_methodname()` akan dapat dipanggil dengan menggunakan query string `?get=methodname` dan method `post_methodname()` akan dapat dipanggil dengan menggunakan query string `?post=methodname`.
-
-Berikut ini contoh lengkap dari sebuah controller:
-```php
-<?php
-
-namespace App\Pages\home;
-
-use Yllumi\Ci4Pages\Controllers\BasePageController;
-
-class PageController extends BasePageController
-{
-
-    // Dapat dipanggil pada url /home
-    public function index($id = null): string
-    {
-       
-    }
-
-    // Dapat dipanggil dengan method POST pada url /home
-    public function process($id = null): string
-    {
-       
-    }
-
-    // Dapat dipanggil pada url /home?get=detail atau /home/id?get=detail
-    public function get_detail($id = null): string
-    {
-       
-    }
-
-    // Dapat dipanggil dengan method POST 
-    // pada url /home?post=update atau /home/id?post=update
-    public function post_update($id = null): string
-    {
-       
-    }
-
-}
-```
+Selain method `getIndex()` kamu juga dapat membuat method lainnya, contohnya seperti `getDetail()` atau `postInsert()`. Hanya method yang namanya diawali oleh http verb yang dapat menerima HTTP request. Mekanisme penamaan method pada controller ini sama seperti Auto Route (improved) yang disediakan oleh CodeIgniter 4.
 
 #### API Endpoint
 
-Kamu juga dapat menerima rekues RESTful dengan membuat class APIController.php.
+Kamu juga dapat mengembalikan response RESTful dengan menambahkan `ResponseTrait` pada class controller.
 
-**`app/Pages/profile/APIController.php`**
+**`app/Pages/home/PageController.php`**
 ```php
 <?php
 
 namespace App\Pages\profile;
 
-use CodeIgniter\RESTful\ResourceController;
+use App\Controllers\BaseController;
 
-class APIController extends ResourceController
+class PageController extends BaseController
 {
-    public function index()
+    use \CodeIgniter\API\ResponseTrait;
+
+    public function getIndex()
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
@@ -159,7 +114,7 @@ class APIController extends ResourceController
         return $this->respond($data);
     }
     
-    public function show($id = null)
+    public function getDetail($id = null)
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
@@ -170,25 +125,11 @@ class APIController extends ResourceController
 }
 ```
 
-APIController dipanggil di endpoint halaman dengan prefix 'api/'. Pada contoh kode di atas endpoint untuk halaman profile adalah domain.com/api/profile.
+Selengkapnya tentang API Response Trait dapat dilihat di dokumentasi CodeIgniter ini: [API Responses Trait](https://codeigniter.com/user_guide/outgoing/api_responses.html).. 
 
-Class APIController diturunkan dari ResourceController bawaan CodeIgniter apa adanya sehingga kamu dapat merujuk ke dokumentasi CodeIgniter 4 untuk penggunaannya. Sistem otomatis membuat resource route untuk setiap folder halaman yang dibuat.
+#### Kombinasi dengan Manual Route
 
-```php
-$routeCollection->resource('api/' . $uriPage, ['controller' => $controllerNamespace]);
-
-# Route di atas equivalen dengan
-$routes->get('api/' . $uriPage, $controllerNamespace . '::index');
-$routes->get('api/' . $uriPage . '/new', $controllerNamespace . '::new');
-$routes->post('api/' . $uriPage, $controllerNamespace . '::create');
-$routes->get('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::show/$1');
-$routes->get('api/' . $uriPage . '/(:segment)/edit', $controllerNamespace . '::edit/$1');
-$routes->put('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::update/$1');
-$routes->patch('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::update/$1');
-$routes->delete('api/' . $uriPage . '/(:segment)', $controllerNamespace . '::delete/$1'); 
-```
-
-Dengan resource controller di atas, method-method yang dapa kamu buat untuk melayani setiap resource endpoint adalah `index()`, `new()`, `create()`, `show()`, `edit()`, `update()`, `update()`, dan `delete()`.
+Kamu tetap dapat menggunakan mekanisme Manual Route dan juga Auto Route (Improved) bawaan CodeIgniter 4, berbarengan dengan page based route ini. Urutan eksekusi routernya adalah [manual route] - [page based route] - [auto route].
 
 ## Kontribusi
 Kami menerima kontribusi dari komunitas! Jika Anda memiliki ide atau menemukan bug, silakan kirimkan pull request atau buka issue di repository ini.
