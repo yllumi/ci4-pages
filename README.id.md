@@ -93,7 +93,48 @@ Selain method `index()` kamu juga dapat membuat method `process()` untuk menerim
 Ini adalah route yang didaftarkan otomatis yang membuat semua ini menjadi mungkin:
 ```php
 $routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
-$routeCollection->post($uriPage, $controllerNamespace . '::process');
+$routeCollection->post($uriPage . '(:any)', $controllerNamespace . '::process$1');
+```
+
+Bila kamu membutuhkan method lain untuk melayani reques GET dan POST selain yang sudah disediakan di atas, kamu dapat menambahkan method baru di dalam class PageController dengan menggunakan prefix get_ dan post_. Misalkan method `get_methodname()` akan dapat dipanggil dengan menggunakan query string `?get=methodname` dan method `post_methodname()` akan dapat dipanggil dengan menggunakan query string `?post=methodname`.
+
+Berikut ini contoh lengkap dari sebuah controller:
+```php
+<?php
+
+namespace App\Pages\home;
+
+use Yllumi\Ci4Pages\Controllers\BasePageController;
+
+class PageController extends BasePageController
+{
+
+    // Dapat dipanggil pada url /home
+    public function index($id = null): string
+    {
+       
+    }
+
+    // Dapat dipanggil dengan method POST pada url /home
+    public function process($id = null): string
+    {
+       
+    }
+
+    // Dapat dipanggil pada url /home?get=detail atau /home/id?get=detail
+    public function get_detail($id = null): string
+    {
+       
+    }
+
+    // Dapat dipanggil dengan method POST 
+    // pada url /home?post=update atau /home/id?post=update
+    public function post_update($id = null): string
+    {
+       
+    }
+
+}
 ```
 
 #### API Endpoint

@@ -93,7 +93,48 @@ In addition to the `index()` method, you can also define a `process()` method to
 Here’s the route registered automatically that makes this work:
 ```php
 $routeCollection->get($uriPage . '(:any)', $controllerNamespace . '::index$1');
-$routeCollection->post($uriPage, $controllerNamespace . '::process');
+$routeCollection->post($uriPage . '(:any)', $controllerNamespace . '::process$1');
+```
+
+If you need other methods to handle GET and POST requests aside from those provided above, you can add new methods within the PageController class by using the get_ and post_ prefixes. For instance, the `get_methodname()` method can be called using the query string `?get=methodname`, and the `post_methodname()` method can be called using the query string `?post=methodname`.
+
+Below is a complete example of a controller:
+```php
+<?php
+
+namespace App\Pages\home;
+
+use Yllumi\Ci4Pages\Controllers\BasePageController;
+
+class PageController extends BasePageController
+{
+
+     // Can be accessed at the URL /home
+    public function index($id = null): string
+    {
+       
+    }
+
+    // Can be accessed with a POST method at the URL /home
+    public function process($id = null): string
+    {
+       
+    }
+
+    // Can be accessed at the URL /home?get=detail or /home/id?get=detail
+    public function get_detail($id = null): string
+    {
+       
+    }
+
+    // Can be accessed with a POST method 
+    // at the URL /home?post=update or /home/id?post=update
+    public function post_update($id = null): string
+    {
+       
+    }
+
+}
 ```
 
 #### API Endpoint
