@@ -1,6 +1,6 @@
 # ci4-pages
 
-**ci4-pages** adalah package untuk CodeIgniter 4 yang menyediakan mekanisme **routing berbasis page**. Package ini mempermudah Anda mengelola routing dengan pendekatan berbasis file dan struktur folder yang lebih fleksibel, sehingga cocok untuk proyek dengan kebutuhan routing dinamis. Bayangkan seperti Next.js atau Laravel Folio tapi dengan mempertahankan kekhasan dari gaya coding CodeIgniter 4. 
+**ci4-pages** adalah package untuk CodeIgniter 4 yang menyediakan mekanisme **routing berbasis page**. Package ini mempermudah Anda mengelola routing dengan pendekatan berbasis file dan struktur folder yang lebih fleksibel, sehingga cocok untuk proyek dengan kebutuhan routing dinamis. Bayangkan seperti Next.js atau Laravel Folio tapi dengan mempertahankan kekhasan dari gaya coding CodeIgniter 4.
 
 ## Instalasi
 Instal package ini melalui Composer dengan perintah berikut:
@@ -13,6 +13,12 @@ composer require yllumi/ci4-pages
 Tambahkan method berikut ini di dalam class `Services` di dalam file **`app/Config/Services.php`**
 
 ```php
+use CodeIgniter\HTTP\Request;
+use CodeIgniter\Router\RouteCollectionInterface;
+use Config\Services as AppServices;
+use Yllumi\Ci4Pages\PageRouter;
+
+// ...
 public static function router(?RouteCollectionInterface $routes = null, ?Request $request = null, bool $getShared = true)
 {
     if ($getShared) {
@@ -113,19 +119,19 @@ class PageController extends BaseController
 
         return $this->respond($data);
     }
-    
+
     public function getDetail($id = null)
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
         $data['id'] = $id;
-        
+
         return $this->respond($data);
     }
 }
 ```
 
-Selengkapnya tentang API Response Trait dapat dilihat di dokumentasi CodeIgniter ini: [API Responses Trait](https://codeigniter.com/user_guide/outgoing/api_responses.html).. 
+Selengkapnya tentang API Response Trait dapat dilihat di dokumentasi CodeIgniter ini: [API Responses Trait](https://codeigniter.com/user_guide/outgoing/api_responses.html)..
 
 #### Kombinasi dengan Manual Route
 
