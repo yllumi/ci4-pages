@@ -12,7 +12,7 @@ composer require yllumi/ci4-pages
 
 ## Configuration
 
-Add the following method inside the Services class in the app/Config/Services.php file.
+Add the following method inside the `Services` class in the **`app/Config/Services.php`** file.
 
 ```php
 use CodeIgniter\HTTP\Request;
