@@ -59,6 +59,14 @@ class PageController extends BaseController
         return pageView('home/index', $data);
     }
 
+    public function getDetail($id = null)
+    {
+        $data['name'] = 'Toni Haryanto';
+        $data['id'] = $id;
+
+        return pageView('home/detail', $data);
+    }
+
 }
 ```
 
@@ -74,7 +82,7 @@ The `getIndex()` method can have parameters that capture the URI segment after t
 
 In the example above, the `getIndex()` method returns the output of the `pageView()` function. This function is similar to `view()` in CodeIgniter but is adjusted to accept the path of the view file located under the app/Pages/ folder. `return pageView('home/index', $data);` means it returns the view file app/Pages/**home/index**.php.
 
-In addition to the `getIndex()` method, you can also create other methods i.e. `getDetail()` or `postInsert()`. Only methods whose names start with an HTTP verb can handle HTTP requests. The method naming mechanism in this controller is the same as the Auto Route (improved) provided by CodeIgniter 4.
+In addition to the `getIndex()` method, you can also create other methods i.e. `getDetail()` or `postInsert()`. Only methods whose names start with an HTTP verb can handle HTTP requests. The method naming mechanism in this controller is the same as the Auto Route (improved) provided by CodeIgniter 4. Method `getDetail()` for example, can be accessedfrom mydomain.com/home/detail/[id].
 
 #### API Endpoint
 
