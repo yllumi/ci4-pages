@@ -12,29 +12,7 @@ composer require yllumi/ci4-pages
 
 ## Configuration
 
-Add the following method inside the Services class in the app/Config/Services.php file.
-
-```php
-use CodeIgniter\Router\RouteCollectionInterface;
-use Config\Services as AppServices;
-use Yllumi\Ci4Pages\PageRouter;
-
-...
-
-public static function router(?RouteCollectionInterface $routes = null, ?Request $request = null, bool $getShared = true)
-{
-    if ($getShared) {
-        return static::getSharedInstance('router', $routes, $request);
-    }
-
-    $routes ??= AppServices::get('routes');
-    $request ??= AppServices::get('request');
-
-    return new PageRouter($routes, $request);
-}
-```
-
-Then, register the pageview_helper in **`app/Controllers/BaseController.php`**
+Register the pageview_helper in **`app/Controllers/BaseController.php`**
 
 ```php
 protected $helpers = ['Yllumi\Ci4Pages\Helpers\pageview'];
@@ -121,13 +99,13 @@ class PageController extends BaseController
 
         return $this->respond($data);
     }
-    
+
     public function getDetail($id = null)
     {
         $data['name'] = 'Toni Haryanto';
         $data['city'] = 'Bandung';
         $data['id'] = $id;
-        
+
         return $this->respond($data);
     }
 }
