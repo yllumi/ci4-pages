@@ -13,6 +13,11 @@
             "Yllumi\\Ci4Pages\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Yllumi\\Ci4Pages\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Toni Haryanto",
@@ -21,6 +26,7 @@
     ],
     "minimum-stability": "stable",
     "require-dev": {
-        "codeigniter/coding-standard": "^1.8"
+        "codeigniter/coding-standard": "^1.8",
+        "phpunit/phpunit": "^10.5"
     }
 }
