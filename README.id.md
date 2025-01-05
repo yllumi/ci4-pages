@@ -124,6 +124,15 @@ Selengkapnya tentang API Response Trait dapat dilihat di dokumentasi CodeIgniter
 
 Kamu tetap dapat menggunakan mekanisme Manual Route dan juga Auto Route (Improved) bawaan CodeIgniter 4, berbarengan dengan page based route ini. Urutan eksekusi routernya adalah [manual route] - [page based route] - [auto route].
 
+#### Page Template Generator
+
+Kamu dapat menggunakan baris perintah `spark` ini di terminal untuk membuat page baru:
+
+```
+php spark page:create pagename
+php spark page:create pagename/subpage
+```
+
 ## Kontribusi
 Kami menerima kontribusi dari komunitas! Jika Anda memiliki ide atau menemukan bug, silakan kirimkan pull request atau buka issue di repository ini.
 

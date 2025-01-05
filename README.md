@@ -82,7 +82,7 @@ The `getIndex()` method can have parameters that capture the URI segment after t
 
 In the example above, the `getIndex()` method returns the output of the `pageView()` function. This function is similar to `view()` in CodeIgniter but is adjusted to accept the path of the view file located under the app/Pages/ folder. `return pageView('home/index', $data);` means it returns the view file app/Pages/**home/index**.php.
 
-In addition to the `getIndex()` method, you can also create other methods i.e. `getDetail()` or `postInsert()`. Only methods whose names start with an HTTP verb can handle HTTP requests. The method naming mechanism in this controller is the same as the Auto Route (improved) provided by CodeIgniter 4. Method `getDetail()` for example, can be accessedfrom mydomain.com/home/detail/[id].
+In addition to the `getIndex()` method, you can also create other methods i.e. `getDetail()` or `postInsert()`. Only methods whose names start with an HTTP verb can handle HTTP requests. The method naming mechanism in this controller is the same as the Auto Route (improved) provided by CodeIgniter 4. Method `getDetail()` for example, can be accessed from mydomain.com/home/detail/[id].
 
 #### API Endpoint
 
@@ -124,6 +124,17 @@ For more information about the API Response Trait, refer to the CodeIgniter docu
 #### Combination with Manual Routes
 
 You can still use the Manual Route mechanism alongside the Auto Route (Improved) provided by CodeIgniter 4 in conjunction with this page-based routing. The execution order of the routers is [manual route] - [page-based route] - [auto route].
+
+#### Page Template Generator
+
+You can run this `spark` command to create a new page folder and files: 
+
+```
+php spark page:create pagename
+php spark page:create pagename/subpage
+```
+
+This command will create a new page folder with its sample controller and view file.
 
 ## Contribution
 We welcome community contributions! If you have ideas or find bugs, feel free to submit a pull request or open an issue in this repository.

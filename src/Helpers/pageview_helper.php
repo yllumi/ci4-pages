@@ -30,3 +30,29 @@ if (! function_exists('pageView')) {
         return $renderer->setData($data, 'raw')->render($name, $options, $saveData);
     }
 }
+
+if (! function_exists('asset_url')) {
+    /**
+     * Generate asset URL with version based on file modification time (filemtime)
+     *
+     * @param string $filePath Relative path to the asset file
+     * @return string Full URL to the asset with version
+     */
+    function asset_url(string $filePath): string
+    {
+        // Full file path
+        $fullFilePath = FCPATH . $filePath;
+
+        // Check if file exists
+        if (file_exists($fullFilePath)) {
+            // Add file modification time as version
+            $version = filemtime($fullFilePath);
+        } else {
+            // Fallback version (current timestamp if file doesn't exist)
+            $version = time();
+        }
+
+        // Generate full URL with version
+        return base_url($filePath) . '?v=' . $version;
+    }
+}
