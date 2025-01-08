@@ -1,4 +1,15 @@
-<?php namespace Yllumi\Ci4Pages\Commands;
+<?php
+
+/**
+ * This file is part of yllumi/ci4-pages.
+ *
+ * (c) 2024 Toni Haryanto <toha.samba@gmail.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
+namespace Yllumi\Ci4Pages\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -13,19 +24,20 @@ class PageCreateCommand extends BaseCommand
     {
         if (empty($params)) {
             CLI::error('Please specify the page name.');
+
             return;
         }
 
-        $pageName = $params[0];
-        $basePath = APPPATH . "Pages/{$pageName}";
+        $pageName       = $params[0];
+        $basePath       = APPPATH . "Pages/{$pageName}";
         $controllerPath = "{$basePath}/PageController.php";
-        $viewPath = "{$basePath}/index.php";
+        $viewPath       = "{$basePath}/index.php";
 
         // Path to templates
-        $templatePath = dirname(__DIR__) . "/templates";
+        $templatePath = dirname(__DIR__) . '/templates';
 
         // Create the folder if it doesn't exist
-        if (!is_dir($basePath)) {
+        if (! is_dir($basePath)) {
             mkdir($basePath, 0755, true);
             CLI::write("Folder created: {$basePath}", 'green');
         } else {
@@ -37,7 +49,7 @@ class PageCreateCommand extends BaseCommand
             "{$templatePath}/PageController.php",
             $controllerPath,
             [
-                '{{pageName}}' => $pageName,
+                '{{pageName}}'      => $pageName,
                 '{{pageNamespace}}' => str_replace('/', '\\', $pageName),
             ]
         );
@@ -48,32 +60,30 @@ class PageCreateCommand extends BaseCommand
             $viewPath,
             [
                 '{{pageName}}' => $pageName,
-                '{{pageSlug}}' => str_replace('/', '_', $pageName)
+                '{{pageSlug}}' => str_replace('/', '_', $pageName),
             ]
         );
     }
 
     /**
      * Create a file from a template, replacing placeholders.
-     *
-     * @param string $templateFile
-     * @param string $targetFile
-     * @param array  $replacements
      */
     private function createFileFromTemplate(string $templateFile, string $targetFile, array $replacements)
     {
-        if (!file_exists($templateFile.'.tpl')) {
+        if (! file_exists($templateFile . '.tpl')) {
             CLI::error("Template not found: {$templateFile}.tpl");
+
             return;
         }
 
         if (file_exists($targetFile)) {
             CLI::write("File already exists: {$targetFile}", 'yellow');
+
             return;
         }
 
         // Read template content
-        $content = file_get_contents($templateFile.'.tpl');
+        $content = file_get_contents($templateFile . '.tpl');
 
         // Replace placeholders
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
