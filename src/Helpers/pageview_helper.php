@@ -36,6 +36,7 @@ if (! function_exists('asset_url')) {
      * Generate asset URL with version based on file modification time (filemtime)
      *
      * @param string $filePath Relative path to the asset file
+     *
      * @return string Full URL to the asset with version
      */
     function asset_url(string $filePath): string
