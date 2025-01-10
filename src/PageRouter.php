@@ -17,6 +17,7 @@ use Closure;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Exceptions\BadRequestException;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Router\RouteCollection;
 use CodeIgniter\Router\Router;
 
 /**
@@ -24,6 +25,8 @@ use CodeIgniter\Router\Router;
  *
  * This class extends the CodeIgniter's Router class
  * to handle page based routes.
+ *
+ * @property-read RouteCollection $collection
  */
 class PageRouter extends Router
 {
