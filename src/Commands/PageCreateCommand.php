@@ -51,7 +51,7 @@ class PageCreateCommand extends BaseCommand
             [
                 '{{pageName}}'      => $pageName,
                 '{{pageNamespace}}' => str_replace('/', '\\', $pageName),
-            ]
+            ],
         );
 
         // Create the index.php file
@@ -61,7 +61,7 @@ class PageCreateCommand extends BaseCommand
             [
                 '{{pageName}}' => $pageName,
                 '{{pageSlug}}' => str_replace('/', '_', $pageName),
-            ]
+            ],
         );
     }
 
