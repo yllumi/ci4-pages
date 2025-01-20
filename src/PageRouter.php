@@ -42,46 +42,18 @@ class PageRouter extends Router
      */
     public function handle(?string $uri = null)
     {
-        // If we cannot find a URI to match against, then set it to root (`/`).
-        if ($uri === null || $uri === '') {
-            $uri = '/';
-        }
-
-        // Decode URL-encoded string
-        $uri = urldecode($uri);
-
-        $this->checkDisallowedChars($uri);
-
-        // Restart filterInfo
-        $this->filtersInfo = [];
-
-        // Checks defined routes
-        if ($this->checkRoutes($uri)) {
-            if ($this->collection->isFiltered($this->matchedRoute[0])) {
-                $this->filtersInfo = $this->collection->getFiltersForRoute($this->matchedRoute[0]);
+        try {
+            $handle = parent::handle($uri);
+        } catch (PageNotFoundException $e) {
+            // HACK: Check for page based routes
+            if ($this->pageBasedRoute($uri)) {
+                return $this->controllerName();
             }
 
-            return $this->controller;
+            throw $e;
         }
 
-        // HACK: Check for page based routes
-        if ($this->pageBasedRoute($uri)) {
-            return $this->controllerName();
-        }
-
-        // Still here? Then we can try to match the URI against
-        // Controllers/directories, but the application may not
-        // want this, like in the case of API's.
-        if (! $this->collection->shouldAutoRoute()) {
-            throw new PageNotFoundException(
-                "Can't find a route for '{$this->collection->getHTTPVerb()}: {$uri}'."
-            );
-        }
-
-        // Checks auto routes
-        $this->autoRoute($uri);
-
-        return $this->controllerName();
+        return $handle;
     }
 
     /**
@@ -133,21 +105,5 @@ class PageRouter extends Router
         }
 
         return $pageFound;
-    }
-
-    /**
-     * Checks disallowed characters
-     */
-    private function checkDisallowedChars(string $uri): void
-    {
-        foreach (explode('/', $uri) as $segment) {
-            if ($segment !== '' && $this->permittedURIChars !== ''
-                && preg_match('/\A[' . $this->permittedURIChars . ']+\z/iu', $segment) !== 1
-            ) {
-                throw new BadRequestException(
-                    'The URI you submitted has disallowed characters: "' . $segment . '"'
-                );
-            }
-        }
     }
 }
