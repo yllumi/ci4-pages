@@ -30,6 +30,8 @@ jobs:
       - name: "CS Check"
         run: "vendor/bin/php-cs-fixer fix --dry-run --diff"
       - name: "Code analyze"
-        run: "vendor/bin/phpstan"
+        run: |
+          vendor/bin/phpstan
+          vendor/bin/rector process --dry-run
       - name: "Run test suite"
         run: "vendor/bin/phpunit"

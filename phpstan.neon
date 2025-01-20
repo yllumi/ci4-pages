@@ -2,7 +2,7 @@ parameters:
     paths:
         - src
         - tests
-    level: 5
+    level: 6
     bootstrapFiles:
         - vendor/codeigniter4/framework/system/Test/bootstrap.php
 
