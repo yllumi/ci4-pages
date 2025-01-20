@@ -14,8 +14,8 @@ use Config\View;
 
 if (! function_exists('pageView')) {
     /**
-     * @param list<mixed>          $data
-     * @param array<string, mixed> $options
+     * @param array<int|string, mixed> $data
+     * @param array<string, mixed>     $options
      */
     function pageView(string $name, array $data = [], array $options = []): string
     {
