@@ -9,8 +9,10 @@
  * the LICENSE file that was distributed with this source code.
  */
 
+use CodeIgniter\Autoloader\FileLocatorInterface;
 use Config\Services as AppServices;
 use Config\View;
+use Psr\Log\LoggerInterface;
 
 if (! function_exists('pageView')) {
     /**
@@ -24,7 +26,12 @@ if (! function_exists('pageView')) {
         $pageViewPath = APPPATH . 'Pages/';
 
         // Create new view instance with custom view path
-        $renderer = new CodeIgniter\View\View($config, $pageViewPath, AppServices::get('locator'), CI_DEBUG, AppServices::get('logger'));
+        /** @var FileLocatorInterface $locator */
+        $locator = AppServices::get('locator');
+        /** @var LoggerInterface $logger */
+        $logger = AppServices::get('logger');
+
+        $renderer = new CodeIgniter\View\View($config, $pageViewPath, $locator, CI_DEBUG, $logger);
 
         if (array_key_exists('saveData', $options)) {
             $saveData = (bool) $options['saveData'];
