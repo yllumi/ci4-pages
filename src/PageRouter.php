@@ -18,6 +18,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Exceptions\BadRequestException;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Router\Router;
+use RuntimeException;
 
 /**
  * Page based router.
@@ -70,6 +71,10 @@ class PageRouter extends Router
         // Set default page for root uri
         if ($uri === '' || $uri === '0') {
             $uri = config('App')->defaultPage ?? 'home';
+
+            if (! is_string($uri)) {
+                throw new RuntimeException('App Config defaultPage must be a string.');
+            }
         }
 
         // Set default variables
