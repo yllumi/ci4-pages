@@ -43,6 +43,10 @@ class PageRouter extends Router
         try {
             $handle = parent::handle($uri);
         } catch (PageNotFoundException $e) {
+            if ($uri === null) {
+                throw $e;
+            }
+
             // HACK: Check for page based routes
             if ($this->pageBasedRoute($uri)) {
                 return $this->controllerName();

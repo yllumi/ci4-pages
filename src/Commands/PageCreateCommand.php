@@ -89,7 +89,11 @@ class PageCreateCommand extends BaseCommand
             return;
         }
 
-        // Read template content
+        /**
+         * Read template content
+         *
+         * @var string $content
+         */
         $content = file_get_contents($templateFile . '.tpl');
 
         // Replace placeholders
