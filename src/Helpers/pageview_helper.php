@@ -13,6 +13,10 @@ use Config\Services as AppServices;
 use Config\View;
 
 if (! function_exists('pageView')) {
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $options
+     */
     function pageView(string $name, array $data = [], array $options = []): string
     {
         $config       = config(View::class);
@@ -45,13 +49,11 @@ if (! function_exists('asset_url')) {
         $fullFilePath = FCPATH . $filePath;
 
         // Check if file exists
-        if (file_exists($fullFilePath)) {
+        $version = file_exists($fullFilePath)
             // Add file modification time as version
-            $version = filemtime($fullFilePath);
-        } else {
+            ? filemtime($fullFilePath)
             // Fallback version (current timestamp if file doesn't exist)
-            $version = time();
-        }
+            : time();
 
         // Generate full URL with version
         return base_url($filePath) . '?v=' . $version;

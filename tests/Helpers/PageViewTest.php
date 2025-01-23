@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PageViewTest extends TestCase
 {
-    public function testPageView()
+    public function testPageView(): void
     {
         helper('Yllumi\Ci4Pages\Helpers\pageview');
 

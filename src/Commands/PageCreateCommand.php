@@ -20,9 +20,12 @@ class PageCreateCommand extends BaseCommand
     protected $name        = 'page:create'; // Nama command
     protected $description = 'Create a new page router';
 
+    /**
+     * @param list<string> $params
+     */
     public function run(array $params)
     {
-        if (empty($params)) {
+        if ($params === []) {
             CLI::error('Please specify the page name.');
 
             return;
@@ -67,6 +70,10 @@ class PageCreateCommand extends BaseCommand
 
     /**
      * Create a file from a template, replacing placeholders.
+     *
+     * @param array<string, string> $replacements
+     *
+     * @return void
      */
     private function createFileFromTemplate(string $templateFile, string $targetFile, array $replacements)
     {

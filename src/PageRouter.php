@@ -17,7 +17,6 @@ use Closure;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Exceptions\BadRequestException;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Router\RouteCollection;
 use CodeIgniter\Router\Router;
 
 /**
@@ -25,8 +24,6 @@ use CodeIgniter\Router\Router;
  *
  * This class extends the CodeIgniter's Router class
  * to handle page based routes.
- *
- * @property-read RouteCollection $collection
  */
 class PageRouter extends Router
 {
@@ -71,7 +68,7 @@ class PageRouter extends Router
         $uri       = trim($uri, '/');
 
         // Set default page for root uri
-        if (empty($uri)) {
+        if ($uri === '' || $uri === '0') {
             $uri = config('App')->defaultPage ?? 'home';
         }
 
@@ -83,7 +80,7 @@ class PageRouter extends Router
 
         $uriSegments = explode('/', $uri);
 
-        while (count($uriSegments) > 0) {
+        while ($uriSegments !== []) {
             $folderPath = $pagesPath . '/' . str_replace('/', DIRECTORY_SEPARATOR, implode('/', $uriSegments));
             if (is_dir($folderPath) && file_exists($folderPath . '/' . $controllerName . '.php')) {
                 $uri                 = implode('/', $uriSegments);
