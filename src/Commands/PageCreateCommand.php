@@ -32,9 +32,12 @@ class PageCreateCommand extends BaseCommand
         }
 
         $pageName       = $params[0];
+        $options        = service('request')->getOptions();
+        $createScript   = array_key_exists('script', $options) || array_key_exists('s', $options) ? true : false;
         $basePath       = APPPATH . "Pages/{$pageName}";
         $controllerPath = "{$basePath}/PageController.php";
         $viewPath       = "{$basePath}/index.php";
+        $scriptPath     = "{$basePath}/script.js";
 
         // Path to templates
         $templatePath = dirname(__DIR__) . '/templates';
@@ -66,6 +69,17 @@ class PageCreateCommand extends BaseCommand
                 '{{pageSlug}}' => str_replace('/', '_', $pageName),
             ],
         );
+
+        // Create script.js file
+        if ($createScript) {
+            $this->createFileFromTemplate(
+                "{$templatePath}/script.js",
+                $scriptPath,
+                [
+                    '{{pageSlug}}' => str_replace('/', '_', $pageName)
+                ]
+            );
+        }
     }
 
     /**
