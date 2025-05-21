@@ -66,3 +66,14 @@ if (! function_exists('asset_url')) {
         return base_url($filePath) . '?v=' . $version;
     }
 }
+
+if (! function_exists('redirectPage')) {
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $options
+     */
+    function redirectPage(string $path)
+    {
+        header('Location: ' . site_url($path));
+    }
+}
