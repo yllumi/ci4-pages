@@ -75,5 +75,6 @@ if (! function_exists('redirectPage')) {
     function redirectPage(string $path)
     {
         header('Location: ' . site_url($path));
+        exit;
     }
 }
